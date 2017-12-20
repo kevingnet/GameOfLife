@@ -1,0 +1,49 @@
+To run the application:
+
+a) There is a precompiled jar that contains all libraries, to run, at the command line type:
+   #java -jar gol.jar ..........n...0......n....0.....n..000.....n..........n..........n..........n..........n..........
+   It will open the GUI application and you should also see the output at the terminal/console
+   
+b) You can open the project in eclipse and run it from there as well, although the console in eclipse isn't as advanced
+
+
+To test the application:
+
+a) You must open the project in eclipse and run each individual test file
+
+The only provided tests are for the engine. At this time, the GUI can only be tested manually and visually.
+
+
+OPERATION:
+
+Starting up:
+- When the application opens, you will see an empty grid of 8x6 (8 columns, 6 rows)
+- If you entered any data at the command line, you should see it (if data is formatted correctly) reflected in the GUI and output
+- If you run from eclipse or not from the command line, it should be a little faster since there's no duplicate console output
+
+Playing:
+- You can play by stepping one generation at a time
+- You can select play from the menu for continuous stepping
+- Choose stop from the menu to pause it
+- You can clear the board from the Board menu, it works even while in continuous play
+- You can select Random Fill from the Board menu to fill the board with cells placed at random locations, also works while running
+- When the game is paused you can toggle cell using the mouse by clicking on the cell you want to set or clear
+
+Options:
+- You can set the stepping speed by choosing Set Speed from the options menu. A value of 1 is the same as one step per second,
+  a value of 2 is two steps per second and so on
+- You can input cells at specific locations by selecting Input Cells from the options menu
+
+DATA FORMAT:
+- only characters allowed are { '.', '0', 'n' } . = empty cell, 0 = live cell, n = new line
+- make sure all lines are the same length, though both columns and rows can be larger than 8x6
+
+FUTURE VERSION:
+- Selectable colors for: background, grid and cells
+- Disable console output for increased speed
+- Save state and Load state for game interruption and restart to survive application restart
+- Predefined cell groups that can be placed at specific locations, in order to study the work from others
+- Prettier GUI with a more modern look and feel
+
+
+   

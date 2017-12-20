@@ -1,0 +1,68 @@
+SKETCH PAD
+
+Cell
+- One bit
+- Surrounded cells represented by one byte, 8 bits
+- The calculation for next step is done via a function that will simply
+  output 1 or 0, so it's an actual referentially transparent function, via
+  a map
+- Cell is represented as a point in a grid
+
+Engine
+- Could go around and gather all bits, or
+- Could get bits from BitSet, however
+- Since 3 seems to be the interesting number, just count until 4 bits maximum
+  because 
+  a) > 4 cell dies
+  b) < 2 cell dies
+  c) = 3 cell if dead, becomes alive
+- Therefore we only get as many bits as needed per cell, not to exceed 4
+- Optimization: Should we reuse previous gets? How?
+
+* Turns out boolean[] is much faster than BitSet, also we avoid the expensive
+  conversions and/or counting of bits, for bool we just increase the counter
+* Should we save coordinates of adjacent bits for each cell? Of course! This way,
+  the calculation only happens once, so we save them as pairs or x,y, those are
+  unique, and we save them to an array attached to each Cell class, the array is
+  invariant, note that for edge cells the array will be smaller, otherwise, it 
+  will be of size = 9
+* NOTE: Since I've chosen Java for this project, I'll have to live with the fact
+  that bit optimizations are very hard to obtain good performance results, as 
+  compared with C/C++.
+* Possible optimization might be to save references of counting for overlapping
+  locations, i.e. the third row, is the first row for two pixels down cell, so 
+  counted bits for overlapping cells might be reused, for this we'd need a way to
+  share data for each cell, but not so good for concurrency, need to look into this
+  for optimization phase.
+
+
+Data
+- Representation is binary per cell
+- Data collection: 
+  a) go around the cell and calculate the byte
+  b) twiddle bits per row and column to provide optimization (later?)
+
+
+Presentation
+- Simple: output as text
+- Preferred: Java GUI
+* The java app uses a grid using JFrame as a window and a menu. 
+
+Operation
+
+- User chooses grid size by resizing the window
+- User sets bits on the grid
+- User starts game or can step through
+- Each iteration causes the grid to be updated, from the underlying data grid
+- Game continues until user pauses or cancels
+
+
+CODE
+- short names are used for local variables
+- descriptive names for everything else
+
+WINDOW SIZES
+- width padding 20
+- height padding 60
+- block size 14
+

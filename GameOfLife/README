@@ -1,0 +1,44 @@
+Conway's Game of Life
+https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
+Implementation in Java by Kevin Guerra
+
+Application is provided for a technical test for Chase Manhattan bank.
+
+Uses Java swing library for graphics
+Engine is separate from the gui so it can be tested and profiled independently
+
+Features:
+- Step manually
+- Continuous stepping via thread
+- Step, Play and Stop menu
+- Selectable stepping speed
+- Selectable (in code)
+  a) cell and grid colors
+  b) cell teleporting to opposite side, or cell confinement to the grid, teleport is default, because of fun factor
+  c) cell can be a circle or square
+- Resizable window, affects grid size, can be done while executing
+- Random grid fill, to more easily experiment
+- Input cell configuration via command line or input box
+
+
+Implementation:
+- Engine uses double buffer, sacrificing space in favor of speed, and also in favor of
+  less memory allocation and deallocation
+- Neighboring cells are precalculated during resizing
+- Both buffers reference the same neighbors data, even in different arrays, to keep a smaller memory footprint
+- The resizing function causes recalculation of double buffers, and only there is memory resized
+- The stepping function does not have any memory allocation or deallocation
+- The code was written in eclipse IDE
+- Testing the code requires eclipse with JUnit
+
+Bugs:
+- Currently there appear to be some occasional refresh bugs, during resizing
+- Somewhat rarely the gui will freeze preventing you from setting cells, stopping the game has no effect, only
+  an application restart
+  
+SAMPLE:
+java -jar gol.jar ..........n...0......n....0.....n..000.....n..........n..........n..........n..........n..........
+invokes a grid of 10x9 with a 'walker'  
+  
+
