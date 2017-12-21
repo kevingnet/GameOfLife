@@ -11,10 +11,12 @@ Features:
 - Continuous stepping via thread
 - Step, Play and Stop menu
 - Selectable stepping speed
+- Cell teleporting to opposite side, or cell confinement to the grid, teleport is default, because of fun factor
+  is selectable from menu
+- Output to console is selectable via menu, however it is default when data is provided via command line
 - Selectable (in code)
   a) cell and grid colors
-  b) cell teleporting to opposite side, or cell confinement to the grid, teleport is default, because of fun factor
-  c) cell can be a circle or square
+  b) cell can be a circle or square
 - Resizable window, affects grid size, can be done while executing
 - Random grid fill, to more easily experiment
 - Input cell configuration via command line or input box
