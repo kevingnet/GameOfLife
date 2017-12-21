@@ -143,6 +143,7 @@ public class GameGrid extends JPanel implements ComponentListener, MouseListener
 		step();
 		try {
 			Thread.sleep(1000 / speed);
+			Thread.yield();
 			run();
 		} catch (InterruptedException ex) {
 		}
