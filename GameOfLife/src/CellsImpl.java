@@ -13,6 +13,7 @@ public class CellsImpl implements Cells {
 	private Dimension dimensions = null;
 	private int columns = 0;
 	private int rows = 0;
+	private boolean teleport = true;
 
 	/* (non-Javadoc)
 	 * @see Cells#resize(int, int)
@@ -69,6 +70,12 @@ public class CellsImpl implements Cells {
 		this.cells = tmp;
 	}
 
+	@Override
+	public void toggleTeleport() {
+		this.teleport = !this.teleport;
+		recalculate();
+	}
+
 	/**
 	 * Recalculate engine cell grid
 	 * use double buffer, so as to avoid unnecessary memory allocation and deallocation
@@ -104,7 +111,11 @@ public class CellsImpl implements Cells {
 			}
 		}
 		// calculate and set neighbors
-		calculateNeighborsStiched();
+		if (this.teleport) {
+			calculateNeighborsStiched();
+		} else {
+			calculateNeighbors();
+		}
 		
 		//clone cell array
 		this.cells = new ArrayList<>(c * r);

@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JCheckBoxMenuItem;
 
 /**
  * @author Kevin Guerra kevingnet@gmail.com
@@ -35,18 +36,24 @@ public class GameOfLife extends JFrame implements ActionListener {
 	private JMenuItem menuStop;
 	private JMenuItem menuInput;
 	private JMenuItem menuSetSpeed;
+	private JCheckBoxMenuItem menuTeleport;
+	private JCheckBoxMenuItem menuOutputToConsole;
 	private GameGrid gameGrid;
 
 	//game engine interface
 	private Cells cells;
 	//thread for automatic continues stepping
 	private Thread gameThread;
+	private static boolean consoleOutput = false;
 
 	/**
 	 * Build the main window using a JFrame
 	 * @param args
 	 */
 	public static void main(String[] args) {
+    for (String s: args) {
+    	consoleOutput = true;
+    }
 		System.out.print("Initializing game of life\n");
 		JFrame gameWindow = new GameOfLife();
 		gameWindow.setTitle("Game of Life");
@@ -62,7 +69,7 @@ public class GameOfLife extends JFrame implements ActionListener {
 		//TODO: better handling and input validation, also handle the casting thing
     for (String s: args) {
     	((GameOfLife) gameWindow).processInput(s);
-    }		
+    }
 	}
 
 	private void resizeWindow(int columns, int rows) {
@@ -84,6 +91,9 @@ public class GameOfLife extends JFrame implements ActionListener {
 		this.cells = new CellsImpl();
 		this.gameGrid = new GameGrid(this.cells);
 		add(this.gameGrid);
+		if (consoleOutput) {
+			this.gameGrid.toggleConsoleOutput();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -110,6 +120,12 @@ public class GameOfLife extends JFrame implements ActionListener {
 		} else if (e.getSource().equals(this.menuSetSpeed)) {
 			System.out.print("Set Speed\n");
 			setSpeed();
+		} else if (e.getSource().equals(this.menuTeleport)) {
+			System.out.print("Teleport Cells\n");
+			teleport();
+		} else if (e.getSource().equals(this.menuOutputToConsole)) {
+			System.out.print("Output To Console\n");
+			consoleOutput();
 		} else {
 			System.out.print("Step one time\n");
 			step();
@@ -158,6 +174,14 @@ public class GameOfLife extends JFrame implements ActionListener {
 		this.gameGrid.clear();
 	}
 
+	private void teleport() {
+		this.gameGrid.toggleTeleportCells();
+	}
+
+	private void consoleOutput() {
+		this.gameGrid.toggleConsoleOutput();
+	}
+
 	private void input() {
 		String cells = JOptionPane.showInputDialog(
 				"Please input cells i.e.\n ...\n.0.\n.0.\n String of periods and zeroes separated by n");
@@ -194,6 +218,16 @@ public class GameOfLife extends JFrame implements ActionListener {
 	}
 
 	private void buildMenu() {
+    System.out.printf("consoleOutput %s\n", Boolean.toString(consoleOutput));
+		
+		this.menuTeleport = new JCheckBoxMenuItem("Teleport Cells");
+		this.menuTeleport.setSelected(true);
+		this.menuTeleport.addActionListener(this);
+		
+		this.menuOutputToConsole = new JCheckBoxMenuItem("Console Output");
+		this.menuOutputToConsole.setSelected(consoleOutput);
+		this.menuOutputToConsole.addActionListener(this);
+
 		this.menuBar = new JMenuBar();
 		setJMenuBar(this.menuBar);
 		this.menuPlay = new JMenuItem("Play");
@@ -223,6 +257,8 @@ public class GameOfLife extends JFrame implements ActionListener {
 		this.menuBoard.add(this.menuClear);
 		this.menuOptions.add(this.menuInput);
 		this.menuOptions.add(this.menuSetSpeed);
+		this.menuOptions.add(this.menuTeleport);
+		this.menuOptions.add(this.menuOutputToConsole);
 		this.menuBar.add(this.menuGame);
 		this.menuBar.add(this.menuBoard);
 		this.menuBar.add(this.menuOptions);

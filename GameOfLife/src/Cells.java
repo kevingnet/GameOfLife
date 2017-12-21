@@ -62,4 +62,9 @@ public interface Cells {
 	 * Step into the next generation of cells
 	 */
 	void step();
+
+	/**
+	 * Toggle teleporting of cells across grid boundaries
+	 */
+	void toggleTeleport();
 }

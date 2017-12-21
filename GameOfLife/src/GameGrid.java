@@ -31,6 +31,7 @@ public class GameGrid extends JPanel implements ComponentListener, MouseListener
 	private Dimension dimensions = null;
 	private final Cells cells;
 	private boolean running = false;
+	private boolean consoleOutput = false;
 
 	/**
 	 * Default constructor, add event listeners, set game engine
@@ -107,6 +108,20 @@ public class GameGrid extends JPanel implements ComponentListener, MouseListener
 	 */
 	public void setSpeed(int sp) {
 		speed = sp;
+	}
+
+	/**
+	 * Teleport cells
+	 */
+	public void toggleTeleportCells() {
+		this.cells.toggleTeleport();
+	}
+
+	/**
+	 * Toggle console output
+	 */
+	public void toggleConsoleOutput() {
+		this.consoleOutput = !this.consoleOutput;
 	}
 
 	/**
@@ -192,38 +207,40 @@ public class GameGrid extends JPanel implements ComponentListener, MouseListener
 	}
 	
 	public void outputCells() {
-		char[] charsTop = new char[this.dimensions.width + 4];
-		char[] charsBottom = new char[this.dimensions.width + 4];
-		Arrays.fill(charsTop, '_');
-		Arrays.fill(charsBottom, '-');
-		String st = new String(charsTop);
-		String sb = new String(charsBottom);
-
-		//reset terminal/console for continues viewing...
-		System.out.print("\033[H\033[2J");
-		System.out.print("Conway's Game of Life\n");
-				
-		int curColumn = 0;
-		System.out.printf("%s\n", st);
-		boolean printStartBar = true;
-		for (Cell cell: this.cells.getCells()) {
-			if (printStartBar) {
-				System.out.print("| ");
-				printStartBar = false;
+		if (this.consoleOutput) {
+			char[] charsTop = new char[this.dimensions.width + 4];
+			char[] charsBottom = new char[this.dimensions.width + 4];
+			Arrays.fill(charsTop, '_');
+			Arrays.fill(charsBottom, '-');
+			String st = new String(charsTop);
+			String sb = new String(charsBottom);
+	
+			//reset terminal/console for continues viewing...
+			System.out.print("\033[H\033[2J");
+			System.out.print("Conway's Game of Life\n");
+					
+			int curColumn = 0;
+			System.out.printf("%s\n", st);
+			boolean printStartBar = true;
+			for (Cell cell: this.cells.getCells()) {
+				if (printStartBar) {
+					System.out.print("| ");
+					printStartBar = false;
+				}
+				if (cell.isAlive()) {
+					System.out.print("0");
+				} else {
+					System.out.print(".");
+				}
+				curColumn++;
+				if (curColumn >= this.dimensions.width) {
+					curColumn = 0;
+					System.out.print(" |\r\n");
+					printStartBar = true;
+				}
 			}
-			if (cell.isAlive()) {
-				System.out.print("0");
-			} else {
-				System.out.print(".");
-			}
-			curColumn++;
-			if (curColumn >= this.dimensions.width) {
-				curColumn = 0;
-				System.out.print(" |\r\n");
-				printStartBar = true;
-			}
+			System.out.printf("%s\n", sb);
 		}
-		System.out.printf("%s\n", sb);
 	}
 
 	/* (non-Javadoc)
